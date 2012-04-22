@@ -1,6 +1,6 @@
 .SUFFIXES: .tex .ps .pdf .png .jpg
 
-all: blob.pdf weak_lensing.pdf
+all: weak_lensing.pdf
 
 %.pdf: %.tex
 	pdflatex $<
