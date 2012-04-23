@@ -4,6 +4,7 @@
 \documentclass[12pt, pdftex]{article}
 
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\given}{\,|\,}
 \newcommand{\RA}{\mathrm{RA}}
 \newcommand{\Dec}{\mathrm{Dec}}
 \newcommand{\shearpars}{\theta}
@@ -49,7 +50,7 @@ parameters $\cosmopars$ it is possible (in principle and now maybe
 even in practice) to write down a probability distribution function
 over shear map parameters $\shearpars$; we will denote this
 \begin{eqnarray}\displaystyle
-p(\shearpars|\cosmopars)
+p(\shearpars\given\cosmopars)
 \quad ,
 \end{eqnarray}
 which is a \emph{probability distribution function} (PDF) over the
@@ -60,7 +61,7 @@ In detail, this probability distribution function is most likely to be
 computed via a three-dimensional map of the mass density; that is, it
 might be better to think of this as looking something like
 \begin{eqnarray}\displaystyle
-p(\shearpars|\cosmopars) &=& \int p(\shearpars|\densitypars)\,p(\densitypars|\cosmopars)\,\dd\densitypars
+p(\shearpars\given\cosmopars) &=& \int p(\shearpars\given\densitypars)\,p(\densitypars\given\cosmopars)\,\dd\densitypars
 \quad ,
 \end{eqnarray}
 where the density-map parameters are in an enormous vector
@@ -70,7 +71,7 @@ cosmological parameters create structure, and structure lenses
 observed sources.  From now on, we will ignore the density map; we
 will assume that it can be (effectively) integrated out; we will
 imagine that we can write down---or really calculate with massive
-computational facilities---the PDF $p(\shearpars|\cosmopars)$.
+computational facilities---the PDF $p(\shearpars\given\cosmopars)$.
 
 Now let's think about a single galaxy $n$.  We have taken some useful
 data $\data_n$ on galaxy $n$, where the vector $\data_n$ might include
@@ -92,7 +93,7 @@ and even the cosmological parameters).
 As with the shear map, we are going to reason probabilistically, in
 the following sense: Galaxies do not have fully arbitrary shapes
 $\shape$; the shapes are drawn from some very compact and informative
-PDF $p(\shape|\shapepars,\position)$, parameterized by some (again
+PDF $p(\shape\given\shapepars,\position)$, parameterized by some (again
 very large) vector of parameters $\shapepars$ and position $\position$
 (because of galaxy evolution; it depends on redshift).  It is clear
 that there \emph{is} such a parameterization, because we all know a
@@ -112,12 +113,12 @@ galaxy morphology is ever to become part of any precise scientific
 activity.
 
 Now let's imagine that a miracle happens and we are handed a
-parameterized PDF for galaxy shapes $p(\shape|\shapepars)$ with
+parameterized PDF for galaxy shapes $p(\shape\given\shapepars)$ with
 parameter vector $\shapepars$.  This PDF, plus a PSF and noise model
 for our imaging, will permit information-limited measurements of the
 shear map.  We start with a likelihood function
 \begin{eqnarray}\displaystyle
-p(\data_n|\shape_n,\position_n,\shearpars)
+p(\data_n\given\shape_n,\position_n,\shearpars)
 \quad ,
 \end{eqnarray}
 which provides the probability we get some particular data $\data_n$
@@ -135,14 +136,14 @@ position $\position_n$ of galaxy $n$ are of no interest---nor are the
 parameters of the shape distribution $\shapepars$---they are
 nuisances.  Let's integrate them out with
 \begin{eqnarray}\displaystyle
-p(\data_n|\position_n,\shearpars,\shapepars) &=&
-\int p(\data_n|\shape_n,\position_n,\shearpars)\,p(\shape_n|\shapepars,\position_n)\,\dd\shape_n
+p(\data_n\given\position_n,\shearpars,\shapepars) &=&
+\int p(\data_n\given\shape_n,\position_n,\shearpars)\,p(\shape_n\given\shapepars,\position_n)\,\dd\shape_n
 \\
-p(\data_n|\shearpars,\shapepars) &=&
-\int p(\data_n|\position_n,\shearpars,\shapepars)\,p(\position_n)\,\dd\position_n
+p(\data_n\given\shearpars,\shapepars) &=&
+\int p(\data_n\given\position_n,\shearpars,\shapepars)\,p(\position_n)\,\dd\position_n
 \\
-p(\data|\shearpars) &=&
-\int \left[\prod_n p(\data_n|\shearpars,\shapepars)\right]\,p(\shapepars)\,\dd\shapepars
+p(\data\given\shearpars) &=&
+\int \left[\prod_n p(\data_n\given\shearpars,\shapepars)\right]\,p(\shapepars)\,\dd\shapepars
 \quad ,
 \end{eqnarray}
 where the two integrals take care of the nuisances, we denote the full
@@ -165,8 +166,8 @@ Continuing on to cosmological parameters, the shear map \emph{itself}
 can be thought of as another huge set of nuisance parameters in the
 following sense:
 \begin{eqnarray}\displaystyle
-p(\data|\cosmopars) &=&
-\int p(\data|\shearpars)\,p(\shearpars|\cosmopars)\,\dd\shearpars
+p(\data\given\cosmopars) &=&
+\int p(\data\given\shearpars)\,p(\shearpars\given\cosmopars)\,\dd\shearpars
 \quad.
 \end{eqnarray}
 This is the likelihood that we (ought to) seek: The probability of the
