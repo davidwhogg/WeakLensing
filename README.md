@@ -5,7 +5,7 @@ documents and code related to hierarchical approaches to weak lensing
 ### Authors
 
 - [David W. Hogg](http://cosmo.nyu.edu/hogg/), New York University
-- [Phil Marshall](http://www.slac.stanford.edu/~pjm/), Oxford University
+- [Phillip J. Marshall](http://www.slac.stanford.edu/~pjm/), Oxford University
 
 ### License
 
