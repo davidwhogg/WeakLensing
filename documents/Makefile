@@ -1,6 +1,6 @@
 .SUFFIXES: .tex .ps .pdf .png .jpg
 
-all: weak_lensing.pdf
+all: weak_lensing.pdf gaussian_gaussians.pdf
 
 %.pdf: %.tex
 	pdflatex $<
