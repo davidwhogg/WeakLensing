@@ -1,0 +1,125 @@
+\documentclass[12pt]{article}
+
+\begin{document}
+
+\noindent\textsl{This is a draft document by David W. Hogg (NYU \& MPIA) dated 2012-06-14.}
+
+\paragraph{background:}
+On 2012-05-31, Konrad Kuijken mentioned to me that he is working on
+novel approaches to weak lensing and that he is committing the sin of
+smoothing images to get a uniform, circular psf.  He noted that his
+``smoothing'' is done with a kernel that can contain negative values
+so it sometimes is used to lightly deconvolve (increase angular
+resolution), sometimes to lightly convolve (decrease angular
+resolution), but always to leave a circular mean psf.  I conjectured
+that there is a \emph{fitting procedure} that would be better than
+smoothing; that is, better than applying a linear filter without
+regard to a noise model or a likelihood function.  The point of this
+document is to make this conjecture more well posed.
+
+The way Kuijken uses his smoothing is (roughly) as follows (if I
+understood him correctly): He takes a weak-lensing shear map, and
+applies \emph{its inverse} to the image.  He determines the psf (or a
+smoothing kernel that will circularize the stars) in the
+inverse-sheared image.  He checks that the mean galaxy ellipticity in
+this inverse-sheared and smoothed image is zero.  If it isn't, he
+updates the shear map (presumably cleverly, using gradients) and tries
+again.  Importantly for what follows (if I understood correctly),
+Kuiken does \emph{not} need to know the psf in the image; he only
+needs to know the kernel that circularizes it.  That's key.
+
+Of course it goes without saying that the kernel will vary in the
+field---hell, he is inverse-shearing before estimating it---but how
+the kernel is permitted to vary is a model-complexity detail that
+doesn't affect any of the below.  At least I think that's true.
+
+\paragraph{setup:}
+Imagine that you have an image $D_n$ (in Kuiken's case an
+inverse-sheared image) of a patch of sky, and \emph{you don't yet
+  know} the psf $\psi_n$.  I am going to assume that all your
+information about the psf $\psi_n$ for image $n$ comes from image $n$
+itself; that is, I am going to assume that you don't have any
+additional external data that tell you the psf.  That must be true,
+right?
+
+I am going to make the stronger assumption that within image $D_n$
+there are a set sources that you are pretty confident are either stars
+or unresolved galaxies.  That is, I am going to assume that you know
+that at $J$ two-dimensional positions $x_{nj}$ there are $J$ point
+sources $j$.  These stars are what you would normally use to infer the
+psf.  Indeed, although this assumption (known stars) is strong, unless
+you are doing something very clever, I think your psf comes from some
+kind of assumption about some sources being stars anyway, which is
+equivalent to this.
+
+Now, interestingly, for the Kuijken methodology, Kuijken does
+\emph{not} need to know the psf $\psi_n$.  He just needs to be able to
+make it circular.  The way anyone normal would think about this is
+that he wants to find a kernel that can be applied to (convolved with)
+the image $D_n$ to make a new image $D_\ast$ that has a standard,
+circular, known psf $\psi_\ast$.  Ordinarily he could go about this by
+using the known stars at the positions $x_{nj}$ to infer the psf
+$\psi_n$ and then use the relationship between $\psi_n$ and
+$\psi_\ast$ to get the kernel and smooth away.
+
+Because I think of this as an inference problem, I prefer to think of
+the \emph{inverse kernel}.  I want to find the kernel $K_n$ that could
+be used to take the circular-psf image $D_\ast$ to the real-psf image
+$D_n$.  I then want to \emph{infer} the circular-psf image using
+probabilistic inference (or an approximation to it).
+
+\paragraph{model and conjecture:}
+Getting more specific, my model is
+\begin{eqnarray}\displaystyle
+D_n = K_n \ast D_\ast + e_n \quad,
+\end{eqnarray}
+where $D_n$ and $D_\ast$ are two-dimensional pixellated images, $K_n$
+is a two-di\-men\-sion\-al kernel (possibly with some negative elements),
+$\ast$ is the convolve operator, and $e_n$ is a two-dimensional image
+of noise.  If the noise is seen as being drawn from some distribution
+(like a Gaussian with zero mean and some variance $C_n$), then this
+model implies a likelihood function and a fitting
+objective---badness-of-fit scalar---something like
+\begin{eqnarray}\displaystyle
+\chi^2 = \sum_{\mathrm{pixels}} C_n^{-1}\,[D_n - K_n \ast D_\ast]^2 \quad,
+\end{eqnarray}
+where implicitly $C_n^{-1}$ is also an image like $D_n$, but an image of inverse variances or fitting weights.  I am being loose
+with the math here.
+
+This model has more parameters than data, of course, because both
+$K_n$ and $D_\ast$ are unknown images, and the latter is as large as
+$D_n$.  Not to worry, we will regularize with a very informative
+prior.  The prior is that the circular-psf image $D_\ast$, \emph{in
+  the vicinity of the stars at $x_{nj}$}, look like delta-functions
+convolved with the standard psf $\psi_\ast$.  That is, we can add to
+the badness-of-fit scalar a penalty like
+\begin{eqnarray}\displaystyle
+\chi_r^2 = \chi^2 + \sum_{\mathrm{pixels}} w_n\,[D_\ast - \psi_\ast \ast \sum_j \delta(x - x_{nj})]^2 \quad,
+\end{eqnarray}
+where $\chi_r^2$ is the regularized objective, $w_n$ is a weight map
+the same size as the image $D_\ast$ with weights set to zero far from
+star positions $x_{nj}$ and set to some large value near those
+positions, $\psi_\ast$ is the standard, uniform, circular psf, and
+$\delta(\cdot)$ is the two-dimensional delta-function.
+
+The model has several free parameters: The investigator can choose how
+to generate the inverse variance map $C_n^{-1}$.  There is a radius
+around each star position $x_{nj}$ out to which the weight map $w_n$
+is non-zero.  There is a non-zero weight value for the weight map near
+the stars.
+
+My suggestion is to find the image $D_\ast$ and kernel $K_n$ that
+jointly optimize the regularized objective $\chi_r^2$.  My conjecture
+is that this will perform better than any straight smoothing.
+
+\paragraph{notes:}
+Because I recommend moving from the smoothing kernel that goes from
+$\psi_n$ to $\psi_\ast$ to a kernel $K_n$ that goes from $\psi_\ast$
+to $\psi_n$, I implicitly recommend making the standard circular psf
+$\psi_n$ slightly (very slightly) \emph{narrower} than $\psi_n$.  To
+keep things well behaved you usually want to be inferring generally
+(though not exclusively) non-negative kernels, and therefore you want
+to lightly \emph{deconvolve} when you infer the image $D_\ast$.  That
+might seem counter-intuitive, but hey.
+
+\end{document}

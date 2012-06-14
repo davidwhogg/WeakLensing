@@ -3,5 +3,5 @@
 *.log
 *.png
 *.pyc
-weak_lensing.pdf
-gaussian_gaussians.pdf
+documents/*.pdf
+
