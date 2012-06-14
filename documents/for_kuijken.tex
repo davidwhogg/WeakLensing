@@ -94,13 +94,14 @@ prior.  The prior is that the circular-psf image $D_\ast$, \emph{in
 convolved with the standard psf $\psi_\ast$.  That is, we can add to
 the badness-of-fit scalar a penalty like
 \begin{eqnarray}\displaystyle
-\chi_r^2 = \chi^2 + \sum_{\mathrm{pixels}} w_n\,[D_\ast - \psi_\ast \ast \sum_j \delta(x - x_{nj})]^2 \quad,
+\chi_r^2 = \chi^2 + \sum_{\mathrm{pixels}} w_n\,[D_\ast - \psi_\ast \ast \sum_j S_j\,\delta(x - x_{nj})]^2 \quad,
 \end{eqnarray}
 where $\chi_r^2$ is the regularized objective, $w_n$ is a weight map
 the same size as the image $D_\ast$ with weights set to zero far from
 star positions $x_{nj}$ and set to some large value near those
-positions, $\psi_\ast$ is the standard, uniform, circular psf, and
-$\delta(\cdot)$ is the two-dimensional delta-function.
+positions, $\psi_\ast$ is the standard, uniform, circular psf, the
+$S_j$ are the brightnesses of the stars $j$, and $\delta(\cdot)$ is
+the two-dimensional delta-function.
 
 The model has several free parameters: The investigator can choose how
 to generate the inverse variance map $C_n^{-1}$.  There is a radius
@@ -108,9 +109,10 @@ around each star position $x_{nj}$ out to which the weight map $w_n$
 is non-zero.  There is a non-zero weight value for the weight map near
 the stars.
 
-My suggestion is to find the image $D_\ast$ and kernel $K_n$ that
-jointly optimize the regularized objective $\chi_r^2$.  My conjecture
-is that this will perform better than any straight smoothing.
+My suggestion is to find the image $D_\ast$ and kernel $K_n$ (and star
+brightnesses $S_j$) that jointly optimize the regularized objective
+$\chi_r^2$.  My conjecture is that this will perform better than any
+straight smoothing.
 
 \paragraph{notes:}
 Because I recommend moving from the smoothing kernel that goes from
