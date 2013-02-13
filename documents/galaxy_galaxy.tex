@@ -1,0 +1,58 @@
+% This file is part of the Weak Lensing project.
+% Copyright 2013 David W. Hogg (NYU).
+
+\documentclass[12pt, pdftex]{article}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\given}{\,|\,}
+\newcommand{\RA}{\mathrm{RA}}
+\newcommand{\Dec}{\mathrm{Dec}}
+\newcommand{\shearpars}{\theta}
+\newcommand{\position}{x}
+\newcommand{\cosmopars}{\omega}
+\newcommand{\densitypars}{\rho}
+\newcommand{\data}{D}
+\newcommand{\shape}{s}
+\newcommand{\shapepars}{\alpha}
+
+\begin{document}
+
+\section*{white paper: Probabilistically righteous galaxy--galaxy weak lensing.}
+
+\noindent
+\textsl{[by Hogg, Bolton, Marshall, others]}
+
+\noindent
+\textsl{2013-02-12}
+
+In galaxy--galaxy weak lensing, standard operating procedure is to
+measure the ellipticities of large numbers of background galaxies and
+average their ellipticity vectors (or spinors) in annuli around target
+foreground galaxies.  The idea is to choose foreground galaxies that
+are expected to be similar in their lensing or mass properties, or
+galaxies whose expected properties can be scaled to be similar, and to
+do the averaging of the vectors in polar coordinates.  If there is a
+weak-lensing signal, then the mean ellipticity will not be zero.
+Background galaxies will be on average tangentially elongated, and the
+mean ellipticity will be a function of radius that depends (very
+simply) on the mean projected mass distribution in the foreground
+galaxies, or really the mean projected excess mass \emph{correlated
+  with} the foreground galaxies.
+
+In general, because the signals are weak and the background galaxy
+density is not high, data from the vicinities of many foreground
+galaxies must be averaged together to get good signal-to-noise.  Any
+time ``stacking'' or ``averaging'' is taking place, there is usually a
+``modeling'' alternative that is more principled, more flexible,
+better able to account for odd noise properties, and more justifiable
+in terms of probabilistic inference.  In the case of galaxy--galaxy
+weak lensing, not only is this true, it is certainly the case that the
+noise properties are odd: The noise in the measurement comes from
+``shape noise'' or really a combination of the fact that background
+galaxies---even unlensed---have a non-trivial shape distribution and
+also that they are not measured properly.
+
+When we write this document, it may or may not include the following
+equations:\ldots
+
+\end{document}
