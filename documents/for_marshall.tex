@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+
+\begin{document}
+
+\paragraph{abstract:}
+Imagine a toy weak-lensing Universe in which there is a finite sky
+chopped up into $M$ equal-sized patches; in each patch $m$ there are
+$N$ galaxies all distorted by a constant weak-lensing shear tensor
+$\gamma_m$.  The cosmological model in this toy Universe is that each
+of the $M$ shear tensors $\gamma_m$ is drawn independently from a
+symmetric Gaussian centered on zero with a single scalar variance
+$\Sigma^2$.  In this toy Universe, four cosmologists live and work;
+they are all trying to determine the cosmological parameter
+$\Sigma^2$, and they all agree on how to measure galaxy shapes, in the
+sense that they all would write down the same likelihood function for
+the galaxy ellipticity measurement given the same intrinsic galaxy
+properties and same shear value.
+
+Cosmologist A attempts to measure cosmological parameter $\Sigma^2$ as
+follows: First make a point estimate for each galaxy ellipticity by
+finding the maximum-likelihood ellipticity for that galaxy. Then
+average---in some very sensible way---the $N$ galaxies in each patch
+$m$ to get an estimate of the shear tensor $\gamma_m$ in patch $m$.
+The estimate of the cosmological variance parameter $\Sigma^2$ is the
+variance of the $M$ estimated shear tensors $\gamma_m$.
+
+Cosmologist B infers the shear tensors $\gamma_m$ in a Bayesian way,
+by asserting a prior probability density function on the intrinsic
+unlensed galaxy shapes, and finding, in each patch, the shear tensor
+$\gamma_m$ that best explains the imaging data.  Because the
+individual galaxy measurements are nuisances, the procedure is to
+marginalize out the $N$ individual galaxy measurements in each patch
+using the intrinsic shape prior.  Cosmologist B takes the makes a
+point estimate of each of the shear tensors $\gamma_m$ by taking the
+maximum \emph{marginalized} likelihood for the shear in each patch.
+The cosmological paameter $\Sigma^2$ is estimated by taking the
+variance of the $M$ estimated shear tensors $\gamma_m$.
+
+Cosmologist C does the same as cosmologist B but infers rather than
+asserts the prior PDF on the intrinsic unlensed galaxy shapes.  This
+involves hierarchical inference and assertion of a hyperprior, or
+prior PDF on the posible prior PDFs for galaxy shapes.  For
+cosmologist C, the marginalized likelihoods involve a marginalization
+over both the individual galaxy shapes \emph{and} the prior on
+intrinsic shapes itself.  Estimation of the cosmological parameter
+$\Sigma^2$ proceeds as for cosmologists A and B.
+
+Cosmologist D goes even further than cosmologist C by including the
+cosmological parameter $\Sigma^2$ in the hierarchical model.
+Everything is the same as for cosmologist C but now instead of
+producing a point estimate for the shear $\gamma_m$ in every patch,
+cosmologist D marginalizes out all the individual shear measurements
+$\gamma_m$.  This is possible because the cosmological model sets the
+prior PDF for the shears; it is the Gaussian whose variance is
+parameter $\Sigma^2$.  This cosmologist produces a fully marginalized
+likelihood for the cosmological variance parameter $\Sigma^2$ (which
+is now a hyperparameter of the hierarchical model), marginalizing out
+all the individual shape measurements, the intrinsic unlensed shape
+prior PDF, and the individual-patch shear tensors.  This fully
+marginalized likelihood can either be optimized to obtain the maximum
+marginalized likelihood value for the cosmological parameter
+$\Sigma^2$ of combined with a hyperprior PDF (a prior on $\Sigma^2$ to
+produce a fully marginalized posterior.
+
+\end{document}

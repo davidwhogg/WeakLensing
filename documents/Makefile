@@ -1,6 +1,6 @@
 .SUFFIXES: .tex .ps .pdf .png .jpg
 
-all: weak_lensing.pdf gaussian_gaussians.pdf for_kuijken.pdf galaxy_galaxy.pdf
+all: for_marshall.pdf weak_lensing.pdf gaussian_gaussians.pdf for_kuijken.pdf galaxy_galaxy.pdf
 
 %.pdf: %.tex
 	pdflatex $<
