@@ -16,16 +16,16 @@
 The standard operating procedure for weak lensing studies is
   to infer the point-spread function (PSF) from the stars in each image,
   and interpolate that PSF information to the galaxy positions,
-  where the weak-lensing signal is measured.
+  where the weak-lensing signal is measured from the galaxy shapes.
 There are many issues with this procedure, including that
-  the stars have different colors than the galaxies (and the PSF is wavelength-dependent),
+  the stars have different colors than the galaxies (and the PSF is wavelength- and potentially also intensity-dependent),
   the (useful) stars are sparse in the images,
   and interpolation involves assumptions and choices.
 Here we recommend using the \emph{galaxies themselves} to perform the PSF inference.
 The key idea is that in most imaging surveys in which PSF estimation is required,
   the same galaxies are observed through differing PSFs in the imaging taken
   under different conditions.
-The PSF-deconvolved galaxy shapes and the imaging PSFs can, in principle,
+This means that the PSF-deconvolved galaxy shapes and the imaging PSFs can, in principle,
   be inferred simultaneously.
 We perform experiments with toy data demonstrating the feasibility of these ideas,
   and their promise for current and future weak-lensing surveys.
@@ -41,5 +41,13 @@ One constraint for projects of this type is that if the PSF is to be
 \section{experiments}
 
 \section{discussion}
+
+Comparison between galaxy-inferred PSF and stellar-inferred PSF. Stars provide high S/N PSF information, but introduce systematic error. What is to be gained by using galaxies?
+
+The smaller the galaxy, the more useful it is as a PSF probe, but the less shear information it provides. Interpolation between small galaxies, is this preferable to interpolation between stars?
+
+
+
+
 
 \end{document}

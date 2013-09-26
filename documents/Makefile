@@ -1,6 +1,9 @@
 .SUFFIXES: .tex .ps .pdf .png .jpg
 
-all: for_marshall.pdf weak_lensing.pdf gaussian_gaussians.pdf for_kuijken.pdf galaxy_galaxy.pdf beyond_ellipticity.pdf infer_psf.pdf
+all: for_marshall.pdf weak_lensing.pdf infer_p-of-e.pdf infer_psf.pdf for_kuijken.pdf galaxy_galaxy.pdf beyond_ellipticity.pdf infer_psf.pdf psfpattern+shearmap.pdf
+
+clean:
+	-rm -f *.log *.aux *.pdf
 
 %.pdf: %.tex
 	pdflatex $<

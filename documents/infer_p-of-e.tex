@@ -14,12 +14,13 @@ Phillip~J.~Marshall \\
 
 \begin{abstract}
 We set up a toy weak-lensing problem---an overly simple scenario in
-which both the two-dimensional morphologies of galaxies under study
-and the imaging point-spread function are Gaussian---and look at the
+which the two-dimensional morphologies of galaxies under study
+can be completely described by two components of a complex ellipticity---and 
+use it to look at the
 methods by which a shear map can be inferred.  While it is true that
 the average ellipticity of a sufficiently large sample of observed
 galaxy images does provide an estimate of the cosmological shear, we
-show that it is much more precise and accurate to probabilistically
+show that it is more precise and accurate to probabilistically
 infer the shear map from the distribution of observations.  This
 inference is hierarchical in that it involves learning the parameters
 of an exceedingly flexible model for the distribution of unlensed
@@ -49,17 +50,39 @@ informative features in the distribution of morphologies.
 
 Another introduction argument: Show (if it is indeed possible to do
 so) that if the distribution of morphologies is ``featureless'' in the
-relevant ways, hierarchical inferenct reduces to averaging.  Is that
+relevant ways, hierarchical inference reduces to averaging.  Is that
 true or possible?
 
 Define terms, especially ``What constitutes a \emph{shear map}?''
 
-\section{toy model}
+\section{A toy hierarchical model}
 
-\section{hierarchical method}
+Suppose we have measured a set of galaxy shapes in the presence of noise and
+PSF blurring, but have somehow managed to do this accurately and such that
+their shape information can be fully captured by their complex ellipticities,
+and the uncertainties on their components (which are Gaussian distributed).
+The next task is to infer the shear field that has been applied to those
+shapes---suppose that shear field is constant, and small over a small patch of
+sky. The measured ellipticity of a galaxy $\epsilon_{\rm obs}$ 
+is related to its intrinsic
+ellipticity $\epsilon$ and the applied (reduced) shear $g$ by 
+\begin{equation}
+\epsilon_{\rm obs} = \epsilon + g + n.
+\end{equation}
+If the distributions for the $\epsilon$ and the noise $n$ have zero mean, then
+an unbiased estimator for $g$ is the ensemble average of $\epsilon_{\rm obs}$
+in the patch, and its variance is the sum of the variances of $\epsilon$ and
+$n$. However, taking this average ignores all the information we have
+about the distribution for $\epsilon$ that is contained in all the data we
+have, in this patch and in all others: by inferring the PDF $p(\epsilon)$ at
+the same time as $g$, we hope to effectively reduce the variance on $g$. This
+reduction would be most obvious if there was a sub-population of sources that
+had smaller intrinsic ellipticities. 
 
-\section{results}
+\section{Tests}
 
-\section{discussion}
+\section{Results}
+
+\section{Discussion}
 
 \end{document}
