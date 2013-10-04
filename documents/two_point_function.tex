@@ -1,0 +1,90 @@
+% This file is part of the Weak Lensing project.
+% Copyright 2013 David W. Hogg (NYU).
+
+\documentclass[12pt]{article}
+
+\begin{document}\sloppy\sloppypar
+
+\noindent
+\textsl{by DWH for Mike O'Neil and others}
+\medskip
+
+The Universe is very close to a Gaussian Process.
+That is, at early times, the temperature and density fluctuations in three-space
+  (on some sensible time-slicing)
+  are very close to Gaussian with a non-trivial spatial covariance function.
+As the Universe ages and gravity acts, the fluctuations amplify,
+  creating substantial non-Gaussianity at small scales.
+However, on the largest scales we measure,
+  even at the present day,
+  the fluctuations are very close to Gaussian.
+That is, if you take the mean density in a very large sliding window,
+  the distribution of mean densities you find (as you slide the window around) is close to normal.
+
+Importantly, much of what we know about the cosmological model
+  comes from measures of the two-point function,
+  that is, the spatial covariance of the fluctuations.
+This is especially true at early times or large scales,
+  when these fluctuations are Gaussian.
+That is, in many cosmological projects,
+  the goal is to measure the variance and covariance
+  of the density (or sometimes temperature)
+  of the Universe as a function of scale or separation.
+
+Astronomers usually think of this inference or measurement
+  in terms of the \emph{auto-correlation function.}
+For a point set (like a set of galaxy positions),
+  the auto-correlation function $\xi(r)$ is defined to be
+  the excess probability (above mean), given that there is a galaxy at some three-position $x$,
+  of finding a galaxy in a thin spherical shell of radius $r$ centered on $x$.
+For a continuous field (like the density field or a temperature field),
+  the auto-correlation function is the covariance in the excess of the field (above the mean value)
+  between points separated by $r$.
+
+For many projects in astronomy, especially those involving point sets (like sets of galaxy positions),
+  the auto-correlation function is usually estimated using heuristic \emph{point estimates}.
+That is, pairs of galaxies are counted as a function of separation
+  and compared to the expectation under the null (uniform Poisson) expectation.
+Various kinds of pair counts over expectation are converted into
+  some kind of auto-correlation function estimator.
+Then inference is done on this \emph{estimate} of the auto-correlation function.
+That is, the data are collapsed into a point-estimate summary statistic,
+  and all principled inference starts after that unprincipled move.
+
+\textsl{Note: I am not completely sure of the content of the following paragraph,
+  but it is almost certainly true and easy to check:}
+One parenthetically amusing thing about the auto-correlation function estimators currently in use
+  is that they are not regularized in any useful way.
+So, for example, it is possible to get a function estimate that is
+  \emph{not a possible auto-correlation function,}
+I mean not ``possible'' in the sense that if one tried to generate data from the output
+  auto-correlation function,
+  one would find that there is no consistent symmetric positive-definite variance tensor
+  that would produce a field or data with this auto-correlation function.
+That is, the heuristic estimators fail the basic requirement of returning
+  \emph{possible} auto-correlation functions.
+
+If we want to perform principled inference all the way down to the data,
+  we will have to find ways to \emph{probabilistically infer} the auto-correlation function
+  directly from the point data,
+  propagating uncertainty.
+That is, we need a \emph{likelihood function} for the auto-correlation function,
+  given a point set.
+There has been some work on this over the years,
+  but no real success (to my current knowledge).
+The sensible place to look is in the area of Gaussian Processes,
+  which are probabilistic descriptions of data (including point sets)
+  provided one-point (mean) and two-point (variance and covariance) parameters.
+Most investigators who have thought about these things have given up on
+  performing complete inference (meaning complete likelihood function specification
+  or complete posterior pdf sampling) in these contexts,
+  arguing that the matrices involved in any reasonable attempt would be just too huge.
+Conversation with O'Neil (NYU) has suggested that this might be wrong.
+So here I attempt to set out what is required,
+  and what is known,
+  such that we might be able assess the feasibility of probabilistic inference of the auto-correlation function
+  (or some variance-tensor equivalent).
+
+and so on and so on.
+
+\end{document}
