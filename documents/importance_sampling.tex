@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+
+% typesetting rules
+\newcommand{\documentname}{\textsl{Note}}
+\newcommand{\project}[1]{\textsl{#1}}
+\newcommand{\thetractor}{\project{The~Tractor}}
+
+% all symbols defined here; use lexigraphic names in text
+\newcommand{\given}{\,|\,}
+\newcommand{\data}{D}
+\newcommand{\shear}{\gamma}
+\newcommand{\ellip}{\epsilon}
+\newcommand{\intrinsic}{\ellip^{\mathrm{int}}}
+\newcommand{\prior}{I}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\nspars}{\omega}
+
+\begin{document}\sloppy\sloppypar
+
+\section*{An importance-sampling approach to hierarchical, probabilistic weak lensing}
+
+\smallskip\noindent
+David W. Hogg (NYU) and others\\
+2014-01-24
+
+\bigskip
+
+All information flows from the data $\data_n$ on galaxy $n$ to the local value of shear $\shear$
+  by means of a likelihood function $p(\data_n\given\shear)$.
+I will treat this as uncontroversial, and the entire goal of what we are doing.
+Of course you can reformulate $\data_n$ to be more general data
+  (including imaging and spectroscopy, say, or covering a patch rather than a galaxy)
+  and you can reformulate $\gamma$ to be a shear field, in two or three dimensions,
+  or even a set of $\Lambda$CDM parameters that \emph{generate} density field
+  (which generates the shear field).
+Also, you can treat the data $\data_n$ on galaxy $n$ to be a pixel patch
+  or a catalog entry derived from that pixel patch;
+  what follows here is independent of that.
+
+One realization we (Marshall \& Hogg, and separately Schneider \& Dawson) have had is
+  that this likelihood $p(\data_n\given\shear)$ involves a \emph{marginalization}
+  over intrinsic shape or ellipticity $\intrinsic_n$.
+That is, each galaxy delivers information about the shear $\gamma$ via its observed shape,
+  and it's observed shape is a function of both the unlensed shape $\intrinsic_n$
+  and the shear $\gamma$ (and possibly other things, like the point-spread function and so on).
+From the point of view of weak lensing, the intrinsic shapes are uninteresting and ought to be integrated out by
+\begin{eqnarray}
+p(\data_n\given\shear)
+  &=& \int p(\data_n\given\intrinsic_n,\shear)\,p(\intrinsic_n\given\prior)\,\dd\intrinsic_n
+  \quad ,
+\end{eqnarray}
+  where $p(\intrinsic\given\prior)$ is the prior on intrinsic shapes,
+  and $\prior$ represents all prior information.
+Once again, there is enormous freedom about what one means by the shape parameter $\intrinsic_n$:
+It must be the unlensed, PSF-deconvolved shape
+  (the thing that would be measured in the absence of seeing and lensing),
+  but in detail that shape could be represented as an ellipticity and a position angle,
+  some moments or polarization parameters,
+  or even a full high-resolution thumbnail image.
+
+Importantly, even if the data $\data_n$ is treated to be a catalog entry that includes an ellipticity,
+  the likelihood $p(\data_n\given\intrinsic_n,\shear)$ is not going to be trivial.
+The reason is that the catalog entries are noisy and involve either PSF deconvolution or something equally ugly.
+Furthermore, the parameters inside the shape object $\intrinsic_n$ are related to the data in nonlinear ways,
+  so the likelihood we care about essentially \emph{cannot} be Gaussian in form,
+  even for an ideally constructed catalog or imaging survey.
+
+Another realization, which goes beyond the scope of this \documentname,
+  is that you can't treat the different galaxies independently
+  (as we have, by considering the $\data_n$ one at a time),
+  because there has also been an implicit or explicit marginalization over point-spread function
+  (and other calibration information),
+  which makes the measurements non-independent, even conditioned on a fixed shear field.
+This is a huge issue, which deserves treatment in a separate project.
+Yet another realization, also beyond the scope,
+  is that there is lensing information also in the positions, sizes, and fluxes
+  of the galaxies,
+  all of which we are (officially) ignoring or pretending to ignore (for now).
+
+Now of course most shear-measuring projects do \emph{not} claim to have any prior over intrinsic shapes $\intrinsic_n$.
+These projects are mistaken.  Why?
+Well, either they are measuring the shear via a likelihood function $p(\data_n\given\shear)$ or they are not.
+If they are not constructing a likelihood or anything that is interpretable as such,
+  then (if frequentists) they aren't saturating the Cram\`er--Rao bound,
+  or (if Bayesians) they aren't obeying the rules.
+That is an inefficient use of telescope time and not permitted by Divine Law.
+If they \emph{are} going through a likelihood function,
+  then they are performing this marginalization either implicitly or explicitly
+  (since the measurements do undeniably involve this intrinsic shape)
+If implicitly, then they \emph{have} adopted a prior, they \emph{just don't know what that prior is}.
+In particular, projects in which
+  measured ellipticities of galaxies are averaged together over sky patches
+  (or something equivalent)
+  have made an implicit (and strong) assumption about the distribution of intrinsic shapes $\intrinsic$;
+  this assumption (since unexamined) must be substantially wrong.
+
+\section{We can't ignore non-shape parameters}
+
+Unfortunately, even the above discussion is too simplistic.
+Any galaxy getting its shape $\intrinsic_n$ measured
+  also has many other parameters that are either measured simultaneously with that shape,
+  or affect the way that shape is measured,
+  or are related to our prior information about what shapes we expect.
+For example, in the case of \thetractor,
+  the measurement of shape $\intrinsic_n$ is made simultaneously with a host of other
+  non-shape parameters $\nspars_n$,
+  which include position, flux, size, and S\'ersic index.
+It turns out that we can't ignore these other parameters for two important reasons.
+
+The first reason we can't ignore the non-shape parameters $\nspars$ is that they affect the likelihood.
+Above, we argued that you can't have a likelihood for the shear $p(\data_n\given\shear)$ 
+  without marginalizing out the intrinsic shape $\intrinsic_n$.
+For the same reason, you can't have a likelihood for the shear and shape $p(\data_n\given\intrinsic_n,\shear)$
+  without marginalizing out the non-shear parameters $\nspars_n$.
+The reason is that any fit performed to the data will depend on these non-shape parameters,
+  or that the likelihood will include covariances between the shape and non-shape parameters.
+Or, technically, the likelihood will not be \emph{separable}:
+\begin{eqnarray}
+p(\data_n\given\nspars_n,\intrinsic_n,\shear)
+  &\ne& g(\nspars_n)\,h(\intrinsic_n,\shear)
+  \quad .
+\end{eqnarray}
+
+\section{Importance sampling}
+
+\end{document}
+
