@@ -14,6 +14,8 @@
 \newcommand{\prior}{I}
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\nspars}{\omega}
+\newcommand{\hyperpars}{\alpha}
+\newcommand{\setof}[1]{\left\{{#1}\right\}}
 
 \begin{document}\sloppy\sloppypar
 
@@ -101,7 +103,7 @@ Any galaxy getting its shape $\intrinsic_n$ measured
   also has many other parameters that are either measured simultaneously with that shape,
   or affect the way that shape is measured,
   or are related to our prior information about what shapes we expect.
-For example, in the case of \thetractor,
+For example, in the case of \thetractor (Lang \& Hogg),
   the measurement of shape $\intrinsic_n$ is made simultaneously with a host of other
   non-shape parameters $\nspars_n$,
   which include position, flux, size, and S\'ersic index.
@@ -120,8 +122,162 @@ p(\data_n\given\nspars_n,\intrinsic_n,\shear)
   &\ne& g(\nspars_n)\,h(\intrinsic_n,\shear)
   \quad .
 \end{eqnarray}
+You might hope for exceptions, but I can guarantee they will not come.
+Even if you could express shape estimation as purely linear fitting
+  (which you cannot)
+  the linear fit would itself create covariances that rule out separability here.
+
+All this means that we are going to have to put a prior on the non-shape parameters
+  and marginalize them out.
+Furthermore, this means that responsible extant projects---%
+  projects that are using efficient frequentist estimators or Bayes---%
+  are \emph{already doing this marginalization} but once again implicitly.
+That is, they are marginalizing out the non-shape parameters with a prior \emph{they don't know}
+  (and which is therefore doomed to be inappropriate).
+
+The second reason we can't ignore the non-shape parameters $\nspars$ is that they affect the \emph{prior}.
+That is, our prior expectations on the intrinsic shape $\intrinsic_n$ of galaxy $n$
+  depends on what we know about its flux, size, and S\'ersic index.
+They also depend on what we know about its redshift, star-formation rate, and large-scale environment.
+Indeed, we can't responsibly put a prior on $\intrinsic$ without conditioning on whatever information
+  we have about the non-shape properties of the galaxy,
+  whether we think of those as image-plane observables (like angular size)
+  or physical properties (like star-formation rate).
+That is, our priors aren't separable either:
+\begin{eqnarray}
+p(\nspars,\intrinsic\given\prior)
+  &\ne& p(\nspars\given\prior)\,p(\intrinsic\given\prior)
+\\
+p(\nspars,\intrinsic\given\prior)
+  &=& p(\nspars\given\prior)\,p(\intrinsic\given\nspars,\prior)
+\end{eqnarray}
+This is a bullet we have to bite if we are going to make best possible use of the data available;
+  indeed this might be the \emph{key ingredient} missing from current cosmological weak lensing projects.
+
+To summarize:
+If we want to measure shear $\gamma$ using data $D_n$ from galaxy $n$,
+  we have to marginalize out nuisance parameters.
+These nuisance parameters necessarily include all the parameters $[\nspars_n,\intrinsic_n]$ describing each galaxy's
+  intrinsic properties, not just its intrinsic ellipticity.
+
+\section{Strategies}
+
+There are three basic strategies worth considering, from easy to hard,
+  with payoffs that increase with difficulty.
+Unfortunately I don't have any estimate, for each strategy,
+  of \emph{either} the cost \emph{or} the benefit,
+  so this may be relatively useless.
+
+The first strategy is to \emph{hard-set a prior in advance by parameterizing folk knowledge}.
+The idea is to get a team of astronomers to read a good chunk of the astronomical literature,
+  gather everything that is known about galaxy regularities (especially as regards shape).
+For example, they will learn that high-S\'ersic galaxies tend to be rounder, and so on.
+This team then writes a set of functions that sets out conditional PDFs for shape and non-shape
+  parameters as a function of shape parameters,
+  and an overall PDF for the top-level controlling non-shape parameters.
+These functions become a prior that can be put into any measurement code
+  (for example, \thetractor),
+  and also used hierarchically in any full model.
+
+The second strategy is to \emph{build an approximate empirical prior from data}.
+The idea is to gather a huge set of actual maximum-likelihood galaxy measurements
+  (preferably taken under similar conditions to the data we care about)
+  and build an empirical PDF from these measurements using a density estimator
+  (such as a KDE).
+This method presumes that lensing is weak
+  (so the measurements are not strongly affected by lensing),
+  and that the gathered data are high in quality
+  (so the maximum-likelihood estimates are good estimates).
+This method is bad, because it is assembling a prior out of noisy measurements,
+  but it is probably going to do a better job of creating a sensible prior
+  than the team-of-experts approach.
+It suffers from all the issues of density estimation,
+  and there are issues of support,
+  but I think these can all be handled.
+(By the way, one thing you do \emph{not} want to do is use a set of posterior samples
+  instead of maximum-likelihood estimates.
+  Posterior samples would be worse for this task.)
+
+The third strategy---%
+  and the only probabilistically justifiable strategy in this case---%
+  is to hierarchically infer the PDF over galaxy nuisance parameters
+  simultaneously with the shear parameters.
+This involves building a hierarchical model with shear at the top,
+  data at the bottom,
+  and galaxy shape and non-shape nuisance parameters in the middle,
+  plus a very flexible model on those nuisance parameters.
+Probabilisitic information is generated about the shear,
+  and the nuisance-parameters,
+  \emph{and} the PDF those nuisance paremeters rode in on.
+The nuisance parameters and their PDF can all be marginalized out.
+The huge advantage of this method is that it is probabilistically righteous;
+  it is (more-or-less) \emph{guaranteed} to beat all other methods.
+The large disadvantages of this method are that
+  it requires running \thetractor\ or equivalent low-level likelihood code
+  within the inference of high-level parameters,
+  it requires inference in a very flexible model
+  (because the nuisance-parameter PDF must be given any flexibility it needs),
+  and it does not permit treatment of the different galaxies $n$ independently:
+Because all $N$ galaxies $n$ contribute to the inference of the PDF over the nuisance parameters,
+  the inference and marginalization out of this PDF correlates all of the data in the inference.
+
+That is, the best strategy looks intractable.
+It may be, but there is one interesting direction to explore,
+  which may permit independent inference on each galaxy but then full-sample hierarchical inference
+  built on the individual-object inferences.
+I will call this approach ``importance sampling''.
 
 \section{Importance sampling}
 
-\end{document}
+In the importance-sampling approach (following Hogg, Myers, \& Bovy, 2010),
+  the idea is to perform individual-galaxy shape inference using default or ``interim'' priors,
+  and then perform the hierarchical inference by reweighting the output of the interim inferences.
+The key ingredients of importance sampling are:
+  interim priors that have \emph{support} everywhere that will conceivably end up with support in the final infererence,
+  and individual-object samplings that are dense enough to have multiple samples in the domain of the final inference.
+These two ingredients are at odds with one another:
+One wants the interim priors to be broad,
+  the other wants the interim priors to be narrow---%
+  or else makes up for interim-prior breadth with extensive (and expensive) sampling.
 
+For each object $n$ we generate $K$ samples $[\nspars_{nk},\intrinsic_{nk},\shear_{nk}]$,
+   sampled from the interim posterior
+\begin{eqnarray}
+p(\nspars_n,\intrinsic_n,\shear\given\data_n)
+  &=& \frac{1}{Z_n}\,p(\data_n\given\nspars_n,\intrinsic_n,\shear)\,p(\shear\given\prior_0)\,p(\intrinsic_n\given\nspars_n,\prior_0)\,p(\nspars_n\given\prior_0)
+  \quad ,
+\end{eqnarray}
+  where $Z_n$ is something we will never try to compute,
+  and $\prior_0$ are the assumptions encoded in the interim priors.
+Once we have this $K$-elements sampling for every galaxy $n$,
+  we can build importance-sampling approximations to various other marginalized likelihoods.
+For example, if in the inference our model PDF over the nuisances  $[\nspars,\intrinsic]$ has hyperparameters $\hyperpars$,
+  the marginalized likelihood can be approximated by
+\begin{eqnarray}
+p(\data_n\given\hyperpars,\shear)
+  &\approx& \frac{Z_n}{K}\,\sum_k \frac{p(\nspars_{nk},\intrinsic_{nk}\given\hyperpars)}{p(\intrinsic_{nk}\given\nspars_{nk},\prior_0)\,p(\nspars_{nk}\given\prior_0)}
+  \\
+p(\data\given\hyperpars,\shear)
+  &=& \prod_n p(\data_n\given\hyperpars,\shear)
+  \\
+\data
+  &\equiv& \setof{\data_n}_{n=1}^N
+  \quad .
+\end{eqnarray}
+This marginalized likelihood $p(\data\given\hyperpars,\shear)$ for the hyperparameters $\alpha$ and shear $\shear$
+  is all you need for subsequent inference and marginalization.
+A factor of $Z_n$ appears in each importance sampling,
+  but we never need to compute the $Z_n$, because they are just irrelevant constants
+  relating the data $D_n$ to the interim priors.
+
+Once again, for the interim priors, there are two choices, given above:
+We can build them using expert knowledge,
+  or we can build them from empirical measurements.
+I would advocate \emph{strongly} either of these over using something like ``flat in everything'',
+  because there is so much structure in the $[\nspars, \intrinsic]$ space,
+  it would be a pity to be sampling useless parts of it.
+That said, a huge advantage of doing ``flat in everything'' is that it is easy to code,
+  and easy to use;
+  the more complex interim priors are harder to code, save, communicate, and use.
+
+\end{document}
