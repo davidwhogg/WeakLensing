@@ -1,15 +1,15 @@
 # Weak Lensing
 
-documents and code related to hierarchical approaches to weak lensing
+documents (and perhaps code) related to hierarchical approaches to weak lensing
 
 ### Authors
 
-- [David W. Hogg](http://cosmo.nyu.edu/hogg/), New York University
-- [Phillip J. Marshall](http://www.slac.stanford.edu/~pjm/), Oxford University
+- [David W. Hogg](http://cosmo.nyu.edu/hogg/), NYU & MPIA
+- [Phillip J. Marshall](http://www.slac.stanford.edu/~pjm/), KIPAC
 
 ### License
 
-Copyright 2011, 2012 by the authors.  **All rights reserved**.
+Copyright 2011-2014 by the authors.  **All rights reserved**.
 
 ### Usage
 
